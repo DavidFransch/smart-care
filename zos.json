@@ -1,0 +1,14 @@
+{
+  "zosversion": "2.2",
+  "name": ".",
+  "version": "0.1.0",
+  "contracts": {
+    "Counter": "Counter",
+    "wallet": "wallet",
+    "Wallet": "Wallet",
+    "MyLinkedContract": "MyLinkedContract"
+  },
+  "dependencies": {
+    "openzeppelin-eth": "^2.1.3"
+  }
+}
