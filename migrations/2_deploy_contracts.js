@@ -1,5 +1,5 @@
-var Patient = artifacts.require("./Patient.sol");
+var SmartCare = artifacts.require("./SmartCare.sol");
 
 module.exports = function(deployer){
-    deployer.deploy(Patient);
+    deployer.deploy(SmartCare);
 };

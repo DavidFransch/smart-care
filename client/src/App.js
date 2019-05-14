@@ -17,7 +17,7 @@ import Providers from "./components/Providers";
 import FormComponent from './components/FormComponent'
 import uuid from 'uuid';
 import axios from 'axios';
-import {PATIENT_ABI, PATIENT_ADDRESS} from './config'
+import {SMART_ABI, SMART_ADDRESS} from './config'
 //import patient from './patient'
 
 class App extends Component {
@@ -47,17 +47,20 @@ class App extends Component {
     //const network = await web3.eth.net.getNetworkType()
     const accounts = await web3.eth.getAccounts()
     this.setState({account: accounts[0]})
-    const patient = new web3.eth.Contract(PATIENT_ABI, PATIENT_ADDRESS)
-    this.setState({patient})
-    const patientCount = await patient.methods.patientCount().call()
+    const smartcare = new web3.eth.Contract(SMART_ABI, SMART_ADDRESS)
+    this.setState({smartcare})
+    const patientCount = await smartcare.methods.patientCount().call()
     this.setState({patientCount})
     for(var i=1; i<=patientCount;i++){
-      const patientMethods = await patient.methods.patients(i).call()
+      const patMethods = await smartcare.methods.patients(i).call()
+      const proMethods = await smartcare.methods.providers(i).call()
       this.setState({
-          tasks: [...this.state.patients, patientMethods]//es6
+          tasks: [...this.state.patients, patMethods],//es6
+          tasks: [...this.state.providers, proMethods]
       })
     }
     console.log("Patient:", this.state.patients)
+    console.log("Provider:", this.state.providers)
     this.setState({loading: false})
   }
   /*
@@ -234,14 +237,15 @@ class App extends Component {
 
   //Add patient
   addPerson=(name, email, password, type)=>{
-    //Add to blockchain
-    this.setState({loading:true})
-    this.state.patient.methods.addPatient(name).send({from: this.state.account})
-    .once('receipt', (receipt) =>{
-      this.setState({loading:false})
-    })
     //console.log(type)
     if(type === 'patient' || type===''){
+       //Add to blockchain
+      this.setState({loading:true})
+      this.state.smartcare.methods.addPatient(name).send({from: this.state.account})
+      .once('receipt', (receipt) =>{
+        this.setState({loading:false})
+      })
+      //Back-end test
         axios.post('https://jsonplaceholder.typicode.com/users',{ 
         name,
         email,
@@ -253,6 +257,13 @@ class App extends Component {
         [...this.state.patients, res.data]}));
         //this.setState({patients: [...this.state.patients, newPatient]});
     }else{
+      //Add to blockchain
+      this.setState({loading:true})
+      this.state.smartcare.methods.addProvider(name).send({from: this.state.account})
+      .once('receipt', (receipt) =>{
+        this.setState({loading:false})
+      })
+
       axios.post('https://jsonplaceholder.typicode.com/users',{ 
         name,
         email,
