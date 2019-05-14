@@ -1,5 +1,5 @@
-export const PATIENT_ADDRESS = '0xE87d3a1B270Be77d1574C9a9b136acb601E528B4'
-export const PATIENT_ABI = [
+export const SMART_ADDRESS = '0xE87d3a1B270Be77d1574C9a9b136acb601E528B4'
+export const SMART_ABI = [
   {
     "constant": true,
     "inputs": [

@@ -199,6 +199,13 @@ class App extends Component {
 
   //Toggle complete
   patientAdded=(id)=>{
+    //Add to blockchain
+    this.setState({loading:true})
+    this.state.smartcare.methods.toggleCompletedPat(id).send({from: this.state.account})
+    .once('receipt', (receipt) =>{
+      this.setState({loading:false})
+    })
+    //Implement on client-side
     this.setState({patients: this.state.patients.map(patient=>{
       if(patient.id === id){
         patient.added = !patient.added
@@ -218,6 +225,13 @@ class App extends Component {
   //PROVIDER
     //Toggle complete
     providerAdded=(id)=>{
+      //Add to blockchain
+      this.setState({loading:true})
+      this.state.smartcare.methods.toggleCompletedProv(id).send({from: this.state.account})
+      .once('receipt', (receipt) =>{
+        this.setState({loading:false})
+      })
+      //
       this.setState({providers: this.state.providers.map(provider=>{
         if(provider.id === id){
           provider.added = !provider.added
